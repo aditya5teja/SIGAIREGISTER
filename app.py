@@ -13,12 +13,13 @@ from email.mime.image import MIMEImage
 from dotenv import load_dotenv
 from pymongo import MongoClient
 from bson import ObjectId
+from waitress import serve
+
 
 # Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
-application=app
 app.secret_key = os.getenv('SECRET_KEY') or os.urandom(24)
 
 # MongoDB connection setup
@@ -128,7 +129,7 @@ def register():
 
     return render_template('thanks.html')
 
-@app.route('/$i$tvali', methods=['GET', 'POST'])
+@app.route('/$i$tdigi', methods=['GET', 'POST'])
 def validate():
     if request.method == 'GET':
         return render_template('validation.html')
@@ -190,4 +191,5 @@ def validate():
         return jsonify({'valid': False, 'message': 'Missing required information in QR code.'})
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    serve(app, host="0.0.0.0", port=8000)
+
